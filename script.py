@@ -1,3 +1,8 @@
+# Description: Script to calculate GPA from PDF file with grades
+# Author: Victor Colella
+# Email: victorcgcpereira@gmail.com
+# Date: 2021-01-01
+
 import eel
 import pdfplumber
 import re
