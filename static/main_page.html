@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Static Web</title>
+    <title>GPA Calculator</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="/eel.js"></script>
     <script>
@@ -16,6 +16,11 @@
                 const reader = new FileReader();
 
                 reader.onload = async function (e) {
+                    document.getElementById("resultBRdiv").style.display = "flex";
+                    document.getElementById("resultUSdiv").style.display = "flex";
+                    document.getElementById('loadingBR').style.display = "flex";
+                    document.getElementById('loadingUS').style.display = "flex";
+
                     const fileData = new Uint8Array(e.target.result);
 
                     // Convert Uint8Array to Array before passing to Python
@@ -23,9 +28,16 @@
 
                     // Call the eel.calculate_gpa function with the file data
                     const result = await eel.calculate_gpa(dataArray)();
+                    const resultBR = result[0];
+                    const resultUS = result[1];
 
                     // Update the result element with the returned value
-                    document.getElementById('result').innerText = "Your GPA : " + result.toFixed(2);
+
+
+                    document.getElementById('loadingBR').style.display = "none";
+                    document.getElementById('loadingUS').style.display = "none";
+                    document.getElementById('resultBR').innerText = "GPA (BR): " + resultBR.toFixed(2);
+                    document.getElementById('resultUS').innerText = "GPA (US): " + resultUS.toFixed(2);
                 };
 
                 reader.readAsArrayBuffer(file);
@@ -41,7 +53,7 @@
         <div class="col-md-6 offset-md-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title" >GPA Calculator</h5>
+                    <h5 class="card-title">GPA Calculator</h5>
                     <form>
                         <div class="mb-3">
                             <input class="form-control" type="file" name="fileToUpload" id="fileToUpload">
@@ -50,9 +62,28 @@
                             <button type="button" class="btn btn-primary" onclick="uploadFile()">Calculate</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card-group col-md-6 offset-md-3">
+            <div class="card" style="display: none;" id="resultBRdiv">
+                <div class="card-body">
                     <div style="display: flex; align-items: center; justify-content: center" class="mt-3">
-                        <h6 class="card-subtitle mb-2 text-muted" id="result" style="font-size: 48px; color: #07b418 !important; font-weight: bold;"></h6>
-                    </div>                    
+                        <div id="loadingBR" style="display: none;" class="spinner-border" role="status"></div>
+                        <h6 class="card-subtitle mb-2 text-muted" id="resultBR"
+                            style="font-size: 24px; color: #000000 !important; font-weight: bold;"></h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="display: none;" id="resultUSdiv">
+                <div class="card-body">
+                    <div style="display: flex; align-items: center; justify-content: center" class="mt-3">
+                        <div id="loadingUS" style="display: none;" class="spinner-border" role="status"></div>
+                        <h6 class="card-subtitle mb-2 text-muted" id="resultUS"
+                            style="font-size: 24px; color: #d22a2a !important; font-weight: bold;"></h6>
+                    </div>
                 </div>
             </div>
         </div>

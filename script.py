@@ -43,8 +43,9 @@ def calculate_gpa(document_content):
                             int(crd),
                             other_info,
                         ]
-
-    return np.sum(df["credits"] * df["grade"]) / df["credits"].sum()
+    df["grade_US"] = df["grade"].apply(lambda x: 4 if x >= 9 else 3 if x >= 7 else 2 if x >= 5 else 1 if x >= 3 else 0)
+    df.to_csv("grades.csv")
+    return np.sum(df["credits"] * df["grade"]) / df["credits"].sum(), np.sum(df["credits"] * df["grade_US"]) / df["credits"].sum()
 
 
 def extract_table_from_pdf(content, page_number=0):
